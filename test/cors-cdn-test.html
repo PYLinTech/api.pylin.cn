@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CDN CORS Test</title>
+  <style>
+    body {
+      font-family: Arial, "Microsoft YaHei", sans-serif;
+      margin: 24px;
+      line-height: 1.6;
+    }
+    button {
+      padding: 8px 14px;
+      cursor: pointer;
+    }
+    pre {
+      background: #111;
+      color: #eee;
+      padding: 14px;
+      overflow: auto;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>cdn.pylin.cn CORS Test</h1>
+  <p>当前 Origin：<strong id="origin"></strong></p>
+  <button id="run">测试请求</button>
+  <pre id="output">点击按钮开始测试。</pre>
+
+  <script>
+    const target = "https://cdn.pylin.cn/";
+    const output = document.getElementById("output");
+    document.getElementById("origin").textContent = location.origin;
+
+    async function runTest() {
+      output.textContent = "请求中: " + target;
+
+      try {
+        const response = await fetch(target, {
+          method: "GET",
+          mode: "cors",
+          cache: "no-store"
+        });
+        const text = await response.text();
+
+        output.textContent = [
+          "CORS 通过",
+          "URL: " + target,
+          "Origin: " + location.origin,
+          "Status: " + response.status + " " + response.statusText,
+          "Content-Type: " + (response.headers.get("content-type") || ""),
+          "",
+          "响应前 500 字符:",
+          text.slice(0, 500)
+        ].join("\n");
+      } catch (error) {
+        output.textContent = [
+          "CORS 失败或网络失败",
+          "URL: " + target,
+          "Origin: " + location.origin,
+          "错误: " + error.message,
+          "",
+          "如果浏览器控制台出现 CORS policy，说明 cdn.pylin.cn 没有允许当前 Origin。"
+        ].join("\n");
+      }
+    }
+
+    document.getElementById("run").addEventListener("click", runTest);
+  </script>
+</body>
+</html>

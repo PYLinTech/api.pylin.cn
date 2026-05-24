@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>毫秒级 UNIX 时间戳</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, "Microsoft YaHei", sans-serif;
+      background: linear-gradient(135deg, #111827, #1f2937, #0f172a);
+      color: #fff;
+    }
+
+    .box {
+      width: min(520px, 90%);
+      padding: 36px 28px;
+      text-align: center;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+    }
+
+    h1 {
+      margin: 0 0 24px;
+      font-size: 28px;
+    }
+
+    #time {
+      margin-bottom: 24px;
+      padding: 22px 14px;
+      border-radius: 18px;
+      background: rgba(15, 23, 42, 0.72);
+      color: #38bdf8;
+      font-size: clamp(30px, 8vw, 48px);
+      font-weight: bold;
+      font-family: Consolas, monospace;
+      letter-spacing: 2px;
+      overflow-x: auto;
+    }
+
+    button {
+      width: 100%;
+      padding: 16px;
+      border: 0;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #7dd3fc, #38bdf8);
+      color: #082f49;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 12px 32px rgba(56, 189, 248, 0.28);
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>毫秒级 UNIX 时间戳</h1>
+    <div id="time"></div>
+    <button onclick="copyTime()">复制</button>
+  </div>
+
+  <script>
+    const time = document.getElementById('time');
+
+    function updateTime() {
+      time.innerText = Date.now();
+    }
+
+    function copyTime() {
+      navigator.clipboard.writeText(time.innerText);
+    }
+
+    updateTime();
+    setInterval(updateTime, 50);
+  </script>
+</body>
+</html>
